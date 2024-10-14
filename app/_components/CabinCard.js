@@ -20,7 +20,7 @@ const CabinCard = ({ cabin }) => {
             </div>
             <div className="flex-grow">
                 <div className="pt-5 pb-4 px-7 bg-primary-950">
-                    <h3 className="text-accent-500 font-medium tracking-wide text-3xl mb-3">Апартман {name}</h3>
+                    <h3 className="text-accent-500 font-medium tracking-wide text-2xl mb-2">Апартман {name}</h3>
                     <div className="flex gap-2 items-center mb-2">
                         <UsersIcon className="h-5 w-5 text-primary-200" />
                         <p className="text-lg text-primary-200">
@@ -30,11 +30,11 @@ const CabinCard = ({ cabin }) => {
                     <p className="flex gap-3 justify-end items-baseline">
                         {discount > 0 ? (
                             <>
-                                <span className="text-3xl">{regularPrice - discount}КМ</span>
+                                <span className="text-2xl">{regularPrice - discount}КМ</span>
                                 <span className="line-through font-semibold text-primary-600">{regularPrice}КМ</span>
                             </>
                         ) : (
-                            <span className="text-3xl">{regularPrice}КМ</span>
+                            <span className="text-2xl">{regularPrice}КМ</span>
                         )}
                         <span className="text-primary-200">/ ноћењу</span>
                     </p>
@@ -43,7 +43,7 @@ const CabinCard = ({ cabin }) => {
                 <div className="text-right">
                     <Link
                         href={`/cabins/${_id}`}
-                        className="inline-block bg-accent-500 px-4 py-3 ml-auto text-primary-50 text-xl tracking-wide font-medium hover:bg-accent-600 transition-all"
+                        className="inline-block bg-accent-500 px-4 py-3 text-primary-50 text-lg tracking-wide font-medium hover:bg-accent-600 transition-all"
                         >
                         Детаљи и резервација &rarr;
                     </Link>

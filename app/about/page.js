@@ -14,7 +14,7 @@ const About = () => {
         <div className="grid grid-cols-5 gap-x-24 gap-y-24 text-xl items-center">
             <div className="col-span-3">
                 <h1 className="text-4xl mb-8 text-accent-400 font-medium">
-                    Добродошли у хотел Тајан
+                    Добро дошли у хотел Тајан
                 </h1>
                 <div className="space-y-8">
                     <p>
