@@ -19,7 +19,7 @@ const CabinCard = ({ cabin }) => {
                 />
             </div>
             <div className="flex-grow">
-                <div className="pt-5 pb-4 px-7 bg-primary-950">
+                <div className="pt-5 pb-2 px-7 bg-primary-950">
                     <h3 className="text-accent-500 font-medium tracking-wide text-2xl mb-2">Апартман {name}</h3>
                     <div className="flex gap-2 items-center mb-2">
                         <UsersIcon className="h-5 w-5 text-primary-200" />
@@ -27,7 +27,7 @@ const CabinCard = ({ cabin }) => {
                             До <span className="font-semibold">{maxCapacity}.</span> {maxCapacity > 4 ? "особа" : "особе"}
                         </p>
                     </div>
-                    <p className="flex gap-3 justify-end items-baseline">
+                    <p className="flex gap-2 justify-end items-baseline">
                         {discount > 0 ? (
                             <>
                                 <span className="text-2xl">{regularPrice - discount}КМ</span>
@@ -43,7 +43,7 @@ const CabinCard = ({ cabin }) => {
                 <div className="text-right">
                     <Link
                         href={`/cabins/${_id}`}
-                        className="inline-block bg-accent-500 px-4 py-3 text-primary-50 text-lg tracking-wide font-medium hover:bg-accent-600 transition-all"
+                        className="inline-block bg-accent-500 px-3 py-2 text-primary-50 text-lg tracking-wide font-medium hover:bg-accent-600 transition-all"
                         >
                         Детаљи и резервација &rarr;
                     </Link>
