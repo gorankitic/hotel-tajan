@@ -5,6 +5,12 @@ import { getCabin } from "@/app/_lib/services";
 // assets
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 
+// Generate dynamic metadata
+export const generateMetadata = async ({ params }) => {
+    const { name } = await getCabin(params.cabinId);
+    return { title: `Апартман ${name}` };
+}
+
 const CabinPage = async ({ params }) => {
     const cabin = await getCabin(params.cabinId);
     const { name, maxCapacity, imageUrl, description } = cabin;

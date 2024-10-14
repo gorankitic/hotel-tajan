@@ -1,3 +1,4 @@
+
 export const getCabins = async () => {
     const response = await fetch(`http://localhost:3001/api/cabins`, { credentials: "include" });
     const json = await response.json();
@@ -16,7 +17,6 @@ export const getCabin = async (cabinId) => {
     if (!response.ok) {
         throw new Error(json.message);
     }
-    // console.log(json)
 
     return json;
 }
