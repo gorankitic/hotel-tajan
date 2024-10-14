@@ -29,7 +29,7 @@ const SideNavigation = () => {
                     <li key={link.name}>
                         <Link
                             href={link.href}
-                            className="flex items-center justify-center gap-4 font-medium tracking-wide hover:bg-primary-900 hover:text-primary-200 py-3 px-5 transition-colors"
+                            className="flex items-center justify-center gap-2 font-medium tracking-wide hover:bg-primary-900 hover:text-primary-200 py-3 px-5 transition-colors"
                         >
                             {link.icon}
                             <span>{link.name}</span>
