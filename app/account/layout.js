@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
             <SideNavigation />
             <div>{children}</div>
         </div>
-    )
-}
+    );
+};
 
 export default Layout;
