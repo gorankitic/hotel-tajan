@@ -30,11 +30,12 @@
   }
 }
 
-/* For data picker */
-
-.rdp {
-  --rdp-cell-size: 32px !important;
-  --rdp-accent-color: theme("colors.accent.500") !important;
-  --rdp-background-color: theme("colors.accent.600") !important;
+/* React Day Picker */
+.rdp-root {
+  --rdp-accent-color: theme("colors.accent.400") !important;
+  --rdp-today-color: theme("colors.accent.700") !important;
+  --rdp-range_middle-background-color: theme("colors.primary.800") !important;
+  --rdp-day-height: 35px !important;
+  --rdp-day-width: 35px !important;
   margin: 0 !important;
 }
