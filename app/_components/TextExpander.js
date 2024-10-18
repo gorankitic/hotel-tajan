@@ -6,7 +6,7 @@ import { useState } from "react";
 const TextExpander = ({ children }) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const displayText = isExpanded ? children : children.split(" ").slice(0, 30).join(" ") + "...";
+  const displayText = isExpanded ? children : children.split(" ").slice(0, 40).join(" ") + "...";
 
   return (
     <span>

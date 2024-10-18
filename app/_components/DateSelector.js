@@ -1,5 +1,7 @@
 "use client";
 
+// hooks
+import { useReservation } from "@/app/_components/ReservationContext";
 // components
 import { DayPicker } from "react-day-picker";
 // utility functions
@@ -8,22 +10,20 @@ import { sr } from "react-day-picker/locale";
 import "react-day-picker/style.css";
 
 const DateSelector = ({ cabin, settings, bookedDates }) => {
-
-    // static data
-    const regularPrice = 200;
-    const discount = 35;
-    const numNights = 4;
-    const cabinPrice = 800;
+    const { range, setRange, resetRange } = useReservation();
+    const { discount, regularPrice, numNights, cabinPrice } = cabin;
 
     const minBookingLength = 1;
     const maxBookingLength = 20;
 
     return (
-        <div className="flex flex-col justify-between grow">
+        <div className="flex flex-col grow">
             <DayPicker
                 className="grow place-content-around place-self-center"
                 classNames={{ day: `hover:bg-accent-400 rounded-full transition-colors duration-300` }}
                 mode="range"
+                selected={range}
+                onSelect={(range) => setRange(range)}
                 locale={sr}
                 startMonth={new Date()}
                 disabled={{ before: new Date() }}
@@ -55,8 +55,15 @@ const DateSelector = ({ cabin, settings, bookedDates }) => {
                         </>
                     ) : (null)}
                 </div>
+                {range?.from || range?.to ? (
+                    <button
+                        onClick={resetRange}
+                        className="border border-primary-800 py-2 px-3 text-sm font-semibold"
+                    >
+                        Обриши
+                    </button>
+                ) : null}
             </div>
-
         </div>
     )
 }

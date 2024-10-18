@@ -23,7 +23,7 @@ const CabinPage = async ({ params }) => {
   const cabin = await getCabin(params.cabinId);
 
   return (
-    <div className="max-w-6xl mx-auto mt-8">
+    <div className="max-w-7xl mx-auto mt-8">
       <Cabin cabin={cabin} />
       <div>
         <h2 className="text-accent-400 text-4xl font-medium text-center tracking-wide mb-10">

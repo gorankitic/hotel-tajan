@@ -8,7 +8,7 @@ const Reservation = async ({ cabin }) => {
     const [settingsData, bookedDates] = await Promise.all([getSettings(), getBookedDates(cabin._id)]);
 
     return (
-        <div className="flex justify-between border border-primary-800">
+        <div className="flex justify-between border border-primary-800 min-h-[450px]">
             <DateSelector
                 settings={settingsData.settings}
                 bookedDates={bookedDates}

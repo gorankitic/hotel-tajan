@@ -35,7 +35,5 @@
   --rdp-accent-color: theme("colors.accent.400") !important;
   --rdp-today-color: theme("colors.accent.700") !important;
   --rdp-range_middle-background-color: theme("colors.primary.800") !important;
-  --rdp-day-height: 35px !important;
-  --rdp-day-width: 35px !important;
   margin: 0 !important;
 }

@@ -9,7 +9,7 @@ const Cabin = ({ cabin }) => {
 
     return (
         <div className="grid grid-cols-[3fr_4fr] gap-14 border border-primary-800 py-3 px-10 mb-12">
-            <div className="relative scale-[1.15] -translate-x-3">
+            <div className="relative scale-[1.15] -translate-x-1">
                 <Image
                     src={imageUrl}
                     fill
@@ -24,7 +24,7 @@ const Cabin = ({ cabin }) => {
                 <p className="text-lg text-primary-100 mb-10">
                     <TextExpander>{description}</TextExpander>
                 </p>
-                <ul className="flex flex-col gap-1 mb-7 text-lg">
+                <ul className="flex flex-col gap-3 mb-7 text-lg">
                     <li className="flex gap-3 items-center">
                         <UsersIcon className="h-5 w-5 text-primary-100" />
                         <span>
