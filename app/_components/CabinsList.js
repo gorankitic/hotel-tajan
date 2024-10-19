@@ -1,6 +1,6 @@
 // components
 import CabinCard from "@/app/_components/CabinCard";
-// server actions
+// service functions
 import { getCabins } from "@/app/_lib/services";
 
 const CabinsList = async ({ filter }) => {

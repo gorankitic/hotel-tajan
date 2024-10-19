@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import Cabin from "@/app/_components/Cabin";
 import Reservation from "@/app/_components/Reservation";
 import Spinner from "@/app/_components/Spinner";
-// server actions
+// service functions
 import { getCabin, getCabins } from "@/app/_lib/services";
 
 // Generate dynamic metadata

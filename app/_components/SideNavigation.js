@@ -4,12 +4,9 @@
 import { usePathname } from "next/navigation";
 // components
 import Link from "next/link";
+import SignOutButton from "./SignOutButton";
 // assets
-import {
-    CalendarDaysIcon,
-    HomeIcon,
-    UserIcon,
-} from "@heroicons/react/24/solid";
+import { CalendarDaysIcon, HomeIcon, UserIcon } from "@heroicons/react/24/solid";
 
 const navLinks = [
     {
@@ -26,7 +23,7 @@ const navLinks = [
         name: "Профил",
         href: "/account/profile",
         icon: <UserIcon className="h-5 w-5 text-primary-100" />,
-    },
+    }
 ];
 
 const SideNavigation = () => {
@@ -47,6 +44,9 @@ const SideNavigation = () => {
                         </Link>
                     </li>
                 ))}
+                <li className="mt-auto">
+                    <SignOutButton />
+                </li>
             </ul>
         </nav>
     );

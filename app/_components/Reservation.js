@@ -1,10 +1,14 @@
+// next-auth
+import { auth } from "@/app/_lib/auth";
 // components
 import DateSelector from "@/app/_components/DateSelector";
 import ReservationForm from "@/app/_components/ReservationForm";
-// server actions
+import LoginMessage from "@/app/_components/LoginMessage";
+// service functions
 import { getBookedDates, getSettings } from "@/app/_lib/services";
 
 const Reservation = async ({ cabin }) => {
+    const session = await auth();
     const [settingsData, bookedDates] = await Promise.all([getSettings(), getBookedDates(cabin._id)]);
 
     return (
@@ -14,7 +18,7 @@ const Reservation = async ({ cabin }) => {
                 bookedDates={bookedDates}
                 cabin={cabin}
             />
-            <ReservationForm cabin={cabin} />
+            {session?.user ? <ReservationForm cabin={cabin} user={session.user} /> : <LoginMessage />}
         </div>
     )
 }

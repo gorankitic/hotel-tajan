@@ -2,24 +2,36 @@
 
 // hooks
 import { useReservation } from "@/app/_components/ReservationContext";
+// components
+import Image from "next/image";
 // utility functions
 import { format } from "date-fns";
 
-const ReservationForm = ({ cabin }) => {
+const ReservationForm = ({ cabin, user }) => {
     const { range } = useReservation();
 
     return (
-        <div className="grow flex flex-col">
+        <div className="grow flex flex-col text-lg min-w-[550px]">
             <div className="flex justify-between items-center bg-primary-800 text-primary-300 px-10 py-2">
-                <p>Пријављен</p>
-                <p>Горан Китић</p>
+                <p>Пријављен:</p>
+                <div className="flex items-center gap-2">
+                    <Image
+                        className="rounded-full"
+                        width={20}
+                        height={20}
+                        src={user.image}
+                        alt={user.name}
+                        referrerPolicy="no-referrer"
+                    />
+                    <span>{user.name}</span>
+                </div>
             </div>
             {range?.from || range?.to ? (
-                <p className="px-10 py-2">Од {format(new Date(range.from), "d.L.yyyy.")} до {format(new Date(range.to), "d.L.yyyy.")}</p>
+                <p className="ml-10 my-2 text-base">Изабрани су дани од {format(new Date(range.from), "d.L.yyyy.")} до {format(new Date(range.to), "d.L.yyyy.")}</p>
             ) : (
-                <p className="text-primary-300 text-base px-10 py-2">Да би сте резервисали изаберите датуме</p>
+                <p className="text-primary-300 ml-10 my-2 text-base">Да би сте резервисали апартман изаберите датуме из календара</p>
             )}
-            <form className="bg-primary-900 py-8 px-10 text-lg flex flex-col flex-1 justify-between">
+            <form className="bg-primary-900 py-8 px-10 flex flex-col flex-1 justify-between">
                 <div className="space-y-1">
                     <label htmlFor="numGuests">Колико гостију?</label>
                     <select

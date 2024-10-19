@@ -1,5 +1,5 @@
 // components
-import SideNavigation from "../_components/SideNavigation";
+import SideNavigation from "@/app/_components/SideNavigation";
 
 const Layout = ({ children }) => {
     return (
