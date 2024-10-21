@@ -1,7 +1,7 @@
 // components
 import Image from "next/image";
 import Link from "next/link";
-// server actions
+// service functions
 import { getCabins } from "../_lib/services";
 // assets
 import image1 from "@/public/about-1.jpg";

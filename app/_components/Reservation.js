@@ -1,5 +1,5 @@
-// next-auth
-import { auth } from "@/app/_lib/auth";
+// kinde-auth
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 // components
 import DateSelector from "@/app/_components/DateSelector";
 import ReservationForm from "@/app/_components/ReservationForm";
@@ -8,8 +8,9 @@ import LoginMessage from "@/app/_components/LoginMessage";
 import { getBookedDates, getSettings } from "@/app/_lib/services";
 
 const Reservation = async ({ cabin }) => {
-    const session = await auth();
     const [settingsData, bookedDates] = await Promise.all([getSettings(), getBookedDates(cabin._id)]);
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
 
     return (
         <div className="flex justify-between border border-primary-800 min-h-[450px]">
@@ -18,7 +19,7 @@ const Reservation = async ({ cabin }) => {
                 bookedDates={bookedDates}
                 cabin={cabin}
             />
-            {session?.user ? <ReservationForm cabin={cabin} user={session.user} /> : <LoginMessage />}
+            {user ? <ReservationForm cabin={cabin} user={user} /> : <LoginMessage />}
         </div>
     )
 }

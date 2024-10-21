@@ -1,8 +1,7 @@
-// next-auth
-import { auth } from "@/app/_lib/auth";
-
-export const middleware = auth;
-
+import { withAuth } from "@kinde-oss/kinde-auth-nextjs/middleware";
+export default function middleware(req) {
+    return withAuth(req);
+}
 export const config = {
     matcher: ["/account"]
-}
+};
