@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Bookings {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  startDate      DateTime @db.Date
+  endDate        DateTime @db.Date
+  cabinPrice     Int
+  breakfastPrice Int
+  totalPrice     Int
+  isPaid         Boolean
+  hasBreakfast   Boolean
+  numGuests      Int
+  numNights      Int
+  observations   String
+  status         String
+
+  cabinId String @db.ObjectId
+  cabin   Cabins @relation(fields: [cabinId], references: [id])
+
+  guestId String @db.ObjectId
+  guest   Guests @relation(fields: [guestId], references: [id])
+
+  createdAt DateTime @db.Date
+  updatedAt DateTime @db.Date
+  v         Int      @map("__v")
+
+  @@index([cabinId])
+  @@index([guestId])
+  @@map("bookings")
+}
+
+model Cabins {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  description  String
+  regularPrice Int
+  discount     Int
+  imageUrl     String
+  maxCapacity  Int
+
+  bookings Bookings[]
+
+  createdAt DateTime @db.Date
+  updatedAt DateTime @db.Date
+  v         Int      @map("__v")
+
+  @@map("cabins")
+}
+
+model Guests {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String @unique
+  imageUrl    String
+  countryFlag String
+  nationalId  String
+  nationality String
+  kindeId     String @unique
+
+  bookings Bookings[]
+
+  createdAt DateTime @db.Date
+  updatedAt DateTime @db.Date
+  v         Int      @map("__v")
+
+  @@map("guests")
+}
+
+model Settings {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  bookingLength      Int
+  breakfastPrice     Int
+  maxGuestPerBooking Int
+  updatedAt          DateTime @db.Date
+
+  @@map("settings")
+}
+
+model Users {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  email    String @unique(map: "email_1")
+  password String
+  photoUrl String
+  role     String
+
+  createdAt DateTime @db.Date
+  updatedAt DateTime @db.Date
+  v         Int      @map("__v")
+
+  @@map("users")
+}

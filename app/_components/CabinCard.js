@@ -5,12 +5,12 @@ import Link from "next/link";
 import { UsersIcon } from "@heroicons/react/24/solid";
 
 const CabinCard = ({ cabin }) => {
-    const { _id, name, maxCapacity, regularPrice, discount, imageUrl } = cabin;
-    
+    const { id, name, maxCapacity, regularPrice, discount, imageUrl } = cabin;
+
     return (
         <div className="flex border-primary-800 border">
             <div className="relative w-1/3">
-                <Image 
+                <Image
                     src={imageUrl}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -42,9 +42,9 @@ const CabinCard = ({ cabin }) => {
 
                 <div className="text-right">
                     <Link
-                        href={`/cabins/${_id}`}
+                        href={`/cabins/${id}`}
                         className="inline-block bg-accent-500 px-3 py-2 text-primary-50 text-lg tracking-wide font-medium hover:bg-accent-600 transition-all"
-                        >
+                    >
                         Детаљи и резервација &rarr;
                     </Link>
                 </div>

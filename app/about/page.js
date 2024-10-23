@@ -1,8 +1,8 @@
 // components
 import Image from "next/image";
 import Link from "next/link";
-// service functions
-import { getCabins } from "../_lib/services";
+// prisma/db
+import prisma from "@/app/_lib/database";
 // assets
 import image1 from "@/public/about-1.jpg";
 import image2 from "@/public/about-2.jpg";
@@ -12,7 +12,7 @@ export const metadata = {
 }
 
 const About = async () => {
-    const { cabins } = await getCabins();
+    const cabins = await prisma.cabins.findMany();
 
     return (
         <div className="grid grid-cols-5 gap-x-24 gap-y-24 text-xl items-center">

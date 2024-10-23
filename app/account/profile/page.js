@@ -5,6 +5,7 @@ import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
 import SelectCountry from "@/app/_components/SelectCountry";
 // service functions
 import { getGuest } from "@/app/_lib/services";
+import prisma from "@/app/_lib/database";
 
 export const metadata = {
     title: "Профил госта"
@@ -13,7 +14,7 @@ export const metadata = {
 const Profile = async () => {
     const { getUser } = getKindeServerSession();
     const user = await getUser();
-    const guest = await getGuest(user.id);
+    const guest = await prisma.guests.findUnique({ where: { kindeId: user.id } });
 
     return (
         <div>

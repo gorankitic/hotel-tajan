@@ -1,10 +1,10 @@
 // components
 import CabinCard from "@/app/_components/CabinCard";
-// service functions
-import { getCabins } from "@/app/_lib/services";
+// prisma/db
+import prisma from "@/app/_lib/database";
 
 const CabinsList = async ({ filter }) => {
-    const { cabins } = await getCabins();
+    const cabins = await prisma.cabins.findMany();
 
     if (!cabins.length) return null;
 
@@ -17,7 +17,7 @@ const CabinsList = async ({ filter }) => {
     return (
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lag:gap-10 xl:gap-12">
             {filteredCabins.map(cabin => (
-                <CabinCard key={cabin._id} cabin={cabin} />
+                <CabinCard key={cabin.id} cabin={cabin} />
             ))}
         </div>
     );

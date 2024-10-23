@@ -1,11 +1,21 @@
 "use server";
 
+// next
+import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 // kinde-auth
 import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+// prisma/db
+import prisma from "@/app/_lib/database";
 
+// Path /account/profile is already protected in middleware...
 export const updateGuest = async (formData) => {
-    const { getUser, getAccessTokenRaw } = getKindeServerSession();
-    const [user, accessToken] = await Promise.all([getUser(), getAccessTokenRaw()]);
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    if (!user) {
+        redirect("/api/auth/login");
+    }
 
     const nationalId = formData.get("nationalId");
     const [nationality, countryFlag] = formData.get("nationality").split("%");
@@ -14,21 +24,16 @@ export const updateGuest = async (formData) => {
         throw new Error("Молим Вас унесите исправан број путне испаве.");
     }
 
-    const response = await fetch(`http://localhost:3001/api/guests/${user.id}`, {
-        method: "PATCH",
-        headers: {
-            Authorization: `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-
+    await prisma.guests.update({
+        where: {
+            kindeId: user.id,
         },
-        credentials: 'include',
-        body: JSON.stringify({ nationality, nationalId, countryFlag })
+        data: {
+            nationalId,
+            nationality,
+            countryFlag
+        }
     });
-    const json = await response.json();
 
-    if (!response.ok) {
-        throw new Error(json.message);
-    }
-
-    return json;
+    revalidatePath("/account/profile");
 }
