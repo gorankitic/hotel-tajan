@@ -9,7 +9,7 @@ import { formatDistanceFromNow } from "@/app/_lib/utils";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 
 
-const ReservationCard = ({ booking }) => {
+const ReservationCard = ({ booking, onDelete }) => {
     const { id, startDate, endDate, numNights, totalPrice, numGuests, createdAt, cabin: { name, imageUrl } } = booking;
 
     return (
@@ -61,7 +61,7 @@ const ReservationCard = ({ booking }) => {
                     <PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-900 transition-colors" />
                     <span className="mt-1">Уреди</span>
                 </Link>
-                <DeleteReservation bookingId={id} />
+                <DeleteReservation bookingId={id} onDelete={onDelete} />
             </div>
         </div>
     )

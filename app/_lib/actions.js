@@ -2,6 +2,7 @@
 
 // next
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 // next-auth
 import { auth, signIn, signOut } from "@/app/_lib/auth";
 // prisma/db
@@ -45,6 +46,36 @@ export const updateGuest = async (formData) => {
     }
 
     revalidatePath("/account/profile");
+}
+
+export const updateReservation = async (formData) => {
+    const session = await auth();
+    if (!session) {
+        throw new Error("Молимо да се пријавите!");
+    }
+    const bookingId = formData.get("bookingId");
+    const numGuests = Number(formData.get("numGuests"));
+    const observations = formData.get("observations").slice(0, 500);
+    try {
+        await prisma.bookings.update({
+            where: {
+                id: bookingId,
+                AND: [
+                    { guestId: session.user.guestId }
+                ],
+            },
+            data: {
+                numGuests,
+                observations
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        throw new Error("Резервацију није могуће ажурирати. Покушајте касније.");
+    }
+    revalidatePath("/account/reservations");
+    revalidatePath(`/account/reservations/edit/${bookingId}`);
+    redirect("/account/reservations");
 }
 
 export const deleteReservation = async (bookingId) => {

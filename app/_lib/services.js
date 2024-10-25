@@ -56,22 +56,6 @@ export const createGuest = async ({ email, name, imageUrl }) => {
     }
 }
 
-export const getGuestReservations = async (guestId) => {
-    const response = await fetch(`http://localhost:3001/api/guests/${guestId}/bookings`, {
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-    });
-    const json = await response.json();
-
-    if (!response.ok) {
-        if (!response.ok) {
-            throw new Error(json.message);
-        }
-    }
-
-    return json;
-}
-
 export const getCountries = async () => {
     try {
         const response = await fetch("https://restcountries.com/v2/all?fields=name,flag");

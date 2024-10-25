@@ -2,18 +2,16 @@
 
 // hooks
 import { useTransition } from "react";
-// server actions
-import { deleteReservation } from "@/app/_lib/actions";
 // components
 import SpinnerMini from "./SpinnerMini";
 // assets
 import { TrashIcon } from "@heroicons/react/24/solid";
 
-const DeleteReservation = ({ bookingId }) => {
+const DeleteReservation = ({ bookingId, onDelete }) => {
     const [isPending, startTransition] = useTransition();
 
     const handleDelete = () => {
-        startTransition(() => deleteReservation(bookingId));
+        startTransition(() => onDelete(bookingId));
     }
 
     return (
