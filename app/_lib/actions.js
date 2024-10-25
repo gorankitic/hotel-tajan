@@ -1,20 +1,25 @@
 "use server";
 
 // next
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-// kinde-auth
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+// next-auth
+import { auth, signIn, signOut } from "@/app/_lib/auth";
 // prisma/db
 import prisma from "@/app/_lib/database";
 
-// Path /account/profile is already protected in middleware...
-export const updateGuest = async (formData) => {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+export const signInAction = async () => {
+    await signIn("google", { redirectTo: "/account" });
+}
 
-    if (!user) {
-        redirect("/api/auth/login");
+export const signOutAction = async () => {
+    await signOut({ redirectTo: "/" });
+}
+
+export const updateGuest = async (formData) => {
+    const session = await auth();
+
+    if (!session) {
+        throw new Error("Молимо да се пријавите!");
     }
 
     const nationalId = formData.get("nationalId");
@@ -24,16 +29,27 @@ export const updateGuest = async (formData) => {
         throw new Error("Молим Вас унесите исправан број путне испаве.");
     }
 
-    await prisma.guests.update({
-        where: {
-            kindeId: user.id,
-        },
-        data: {
-            nationalId,
-            nationality,
-            countryFlag
-        }
-    });
+    try {
+        await prisma.guests.update({
+            where: {
+                id: session.user.guestId,
+            },
+            data: {
+                nationalId,
+                nationality,
+                countryFlag
+            }
+        });
+    } catch (error) {
+        throw new Error("Профил није могуће ажурирати. Покушајте касније.");
+    }
 
     revalidatePath("/account/profile");
+}
+
+export const deleteReservation = async (bookingId) => {
+
+    await prisma.bookings.delete({ where: { id: bookingId } });
+
+    revalidatePath("/account/reservations");
 }

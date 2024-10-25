@@ -1,12 +1,13 @@
-// kinde-auth
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+// next-auth
+import { auth } from "@/app/_lib/auth";
 // components
 import Link from "next/link";
 import Image from "next/image";
 
 const Navigation = async () => {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+    const session = await auth();
+
+    const name = session?.user.name.split(" ").at(0);
 
     return (
         <nav className="text-xl z-10">
@@ -28,7 +29,7 @@ const Navigation = async () => {
                     </Link>
                 </li>
                 <li>
-                    {user && user.picture ? (
+                    {session?.user && session.user.image ? (
                         <Link
                             href="/account"
                             className="hover:text-accent-400 transition-colors flex items-center gap-2"
@@ -37,11 +38,11 @@ const Navigation = async () => {
                                 className="rounded-full"
                                 width={24}
                                 height={24}
-                                src={user.picture}
-                                alt={user.given_name}
+                                src={session.user.image}
+                                alt={session.user.name}
                                 referrerPolicy="no-referrer"
                             />
-                            <span>{user.given_name}</span>
+                            <span>{name}</span>
                         </Link>
                     ) : (
                         <Link

@@ -19,11 +19,11 @@ const ReservationForm = ({ cabin, user }) => {
                         className="rounded-full"
                         width={20}
                         height={20}
-                        src={user.picture}
-                        alt={user.given_name}
+                        src={user.image}
+                        alt={user.name}
                         referrerPolicy="no-referrer"
                     />
-                    <span>{`${user.given_name} ${user.family_name}`}</span>
+                    <span>{user.name}</span>
                 </div>
             </div>
             {range?.from || range?.to ? (

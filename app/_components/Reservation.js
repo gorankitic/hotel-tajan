@@ -1,5 +1,5 @@
-// kinde-auth
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+// next-auth
+import { auth } from "@/app/_lib/auth";
 // components
 import DateSelector from "@/app/_components/DateSelector";
 import ReservationForm from "@/app/_components/ReservationForm";
@@ -10,8 +10,7 @@ import prisma from "@/app/_lib/database";
 import { getBookedDates } from "@/app/_lib/services";
 
 const Reservation = async ({ cabin }) => {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
+    const session = await auth();
     const [settingsData, bookedDates] = await Promise.all([prisma.settings.findMany(), getBookedDates(cabin.id)]);
 
     return (
@@ -21,7 +20,7 @@ const Reservation = async ({ cabin }) => {
                 bookedDates={bookedDates}
                 cabin={cabin}
             />
-            {user ? <ReservationForm cabin={cabin} user={user} /> : <LoginMessage />}
+            {session?.user ? <ReservationForm cabin={cabin} user={session.user} /> : <LoginMessage />}
         </div>
     )
 }

@@ -1,28 +1,27 @@
-// kinde-auth
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-// service functions
-import { getGuestReservations, getGuest } from "@/app/_lib/services";
+
 // components
 import Link from "next/link";
 import ReservationList from "@/app/_components/ReservationList";
+// prisma/db
+import prisma from "@/app/_lib/database";
 
 export const metadata = {
     title: "Резервације",
 };
 
+// REFACTOR USER AND GUEST
 const Reservations = async () => {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
-    const guest = await getGuest(user.id);
-    const reservations = await getGuestReservations(guest._id);
+    const guest = await prisma.guests.findUnique({ where: { kindeId: user.id } });
+
+    const bookings = await prisma.bookings.findMany({ where: { guestId: guest.id }, include: { cabin: true } });
 
     return (
         <div>
-            <h2 className="font-semibold text-2xl text-accent-400 mb-7">
+            <h2 className="font-medium text-2xl text-accent-400 mb-6">
                 Ваше резервације
             </h2>
 
-            {reservations.length === 0 ? (
+            {bookings.length === 0 ? (
                 <p className="text-lg">
                     Немате резервација. Погледајте наше{" "}
                     <Link className="underline text-accent-500" href="/cabins">
@@ -30,7 +29,7 @@ const Reservations = async () => {
                     </Link>
                 </p>
             ) : (
-                <ReservationList reservations={reservations} />
+                <ReservationList bookings={bookings} />
             )}
         </div>
     )

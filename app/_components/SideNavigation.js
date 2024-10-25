@@ -4,7 +4,7 @@
 import { usePathname } from "next/navigation";
 // components
 import Link from "next/link";
-import SignOutButton from "./SignOutButton";
+import SignOutButton from "@/app/_components/SignOutButton";
 // assets
 import { CalendarDaysIcon, HomeIcon, UserIcon } from "@heroicons/react/24/solid";
 

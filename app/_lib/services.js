@@ -5,59 +5,55 @@ import { eachDayOfInterval } from 'date-fns';
 
 export const getBookedDates = async (cabinId) => {
     const today = new Date();
-    const bookings = await prisma.bookings.findMany({
-        where: {
-            cabinId,
-            endDate: {
-                gte: today,
+    try {
+        const bookings = await prisma.bookings.findMany({
+            where: {
+                cabinId,
+                endDate: {
+                    gte: today,
+                },
             },
-        },
-        select: {
-            startDate: true,
-            endDate: true,
-        },
-    });
-    const bookedDates = bookings
-        .map((booking) => {
-            return eachDayOfInterval({
-                start: new Date(booking.startDate),
-                end: new Date(booking.endDate),
-            });
-        })
-        .flat(); // Flatten the array of arrays into a single array
+            select: {
+                startDate: true,
+                endDate: true,
+            },
+        });
+        const bookedDates = bookings
+            .map((booking) => {
+                return eachDayOfInterval({
+                    start: new Date(booking.startDate),
+                    end: new Date(booking.endDate),
+                });
+            })
+            .flat(); // Flatten the array of arrays into a single array
 
-    return bookedDates;
+        return bookedDates;
+    } catch (error) {
+        console.error("❌ERROR: ", error);
+        throw new Error(error.message);
+    }
 }
 
-export const getGuest = async (id) => {
-    const response = await fetch(`http://localhost:3001/api/guests/${id}`, {
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-    });
-    const json = await response.json();
-
-    if (json.status === "error") {
-        // Don't throw an error, if there is no guest create a new one in DB
-        return json;
+export const getGuest = async (email) => {
+    try {
+        const guest = await prisma.guests.findUnique({ where: { email } });
+        // If there is no guest Prisma will return null
+        // Return null to signIn callback to create a new guest
+        return guest;
+    } catch (error) {
+        console.error("❌ERROR: ", error);
+        throw new Error(error.message);
     }
-
-    return json;
 }
 
-export const createGuest = async ({ email, name, imageUrl, kindeId }) => {
-    const response = await fetch(`http://localhost:3001/api/guests`, {
-        method: "POST",
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email, name, imageUrl, kindeId })
-    });
-    const json = await response.json();
-
-    if (!response.ok) {
-        throw new Error(json.message);
+export const createGuest = async ({ email, name, imageUrl }) => {
+    try {
+        const guest = await prisma.guests.create({ data: { email, name, imageUrl } })
+        return guest;
+    } catch (error) {
+        console.error("❌ERROR: ", error);
+        throw new Error(error.message);
     }
-
-    return json;
 }
 
 export const getGuestReservations = async (guestId) => {

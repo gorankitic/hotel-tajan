@@ -27,8 +27,8 @@ model Bookings {
   guestId String @db.ObjectId
   guest   Guests @relation(fields: [guestId], references: [id])
 
-  createdAt DateTime @db.Date
-  updatedAt DateTime @db.Date
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   v         Int      @map("__v")
 
   @@index([cabinId])
@@ -47,28 +47,27 @@ model Cabins {
 
   bookings Bookings[]
 
-  createdAt DateTime @db.Date
-  updatedAt DateTime @db.Date
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   v         Int      @map("__v")
 
   @@map("cabins")
 }
 
 model Guests {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
   name        String
-  email       String @unique
-  imageUrl    String
-  countryFlag String
-  nationalId  String
-  nationality String
-  kindeId     String @unique
+  email       String  @unique
+  imageUrl    String?
+  countryFlag String?
+  nationalId  String?
+  nationality String?
 
   bookings Bookings[]
 
-  createdAt DateTime @db.Date
-  updatedAt DateTime @db.Date
-  v         Int      @map("__v")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  v         Int?     @map("__v")
 
   @@map("guests")
 }
@@ -91,8 +90,8 @@ model Users {
   photoUrl String
   role     String
 
-  createdAt DateTime @db.Date
-  updatedAt DateTime @db.Date
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   v         Int      @map("__v")
 
   @@map("users")

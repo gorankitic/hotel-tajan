@@ -1,10 +1,9 @@
-// kinde-auth
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+// next auth
+import { auth } from "@/app/_lib/auth";
 // components
 import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
 import SelectCountry from "@/app/_components/SelectCountry";
-// service functions
-import { getGuest } from "@/app/_lib/services";
+// prisma/db
 import prisma from "@/app/_lib/database";
 
 export const metadata = {
@@ -12,13 +11,12 @@ export const metadata = {
 }
 
 const Profile = async () => {
-    const { getUser } = getKindeServerSession();
-    const user = await getUser();
-    const guest = await prisma.guests.findUnique({ where: { kindeId: user.id } });
+    const session = await auth();
+    const guest = await prisma.guests.findUnique({ where: { id: session.user.guestId } });
 
     return (
         <div>
-            <h2 className="font-semibold text-2xl text-accent-400 mb-4">
+            <h2 className="font-medium text-2xl text-accent-400 mb-6">
                 Ажурирајте свој профил
             </h2>
 
@@ -31,7 +29,7 @@ const Profile = async () => {
                     name="nationality"
                     id="nationality"
                     className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
-                    defaultCountry={guest?.nationality}
+                    defaultCountry={guest.nationality}
                 />
             </UpdateProfileForm>
         </div>
