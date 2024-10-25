@@ -1,7 +1,7 @@
 # 🌲 Hotel Tajan
 
-Hotel Tajan is a studen project and a simple full-stack application create in process of learning Next.js, React, Prisma ORM, and TailwindCSS.
-Guest can register to the application, find apartman, pick free days, and create a reservation.
+Hotel Tajan is a student project and a simple full-stack application created in process of learning Next.js, React, Prisma ORM, and TailwindCSS.
+Guest can register to the application, find apartment, pick free days, and create a reservation.
 
 ⌨️ Practicing & learning: Fetching data, SSR, client and server interactions, data mutations with server actions,
 
