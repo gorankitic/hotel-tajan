@@ -18,18 +18,14 @@ export const signOutAction = async () => {
 
 export const updateGuest = async (formData) => {
     const session = await auth();
-
     if (!session) {
         throw new Error("Молимо да се пријавите!");
     }
-
     const nationalId = formData.get("nationalId");
     const [nationality, countryFlag] = formData.get("nationality").split("%");
-
     if (!/^[a-zA-Z0-9]{6,12}$/.test(nationalId)) {
         throw new Error("Молим Вас унесите исправан број путне испаве.");
     }
-
     try {
         await prisma.guests.update({
             where: {
@@ -44,8 +40,33 @@ export const updateGuest = async (formData) => {
     } catch (error) {
         throw new Error("Профил није могуће ажурирати. Покушајте касније.");
     }
-
     revalidatePath("/account/profile");
+}
+
+export const createReservation = async (reservationData, formData) => {
+    const session = await auth();
+    if (!session) {
+        throw new Error("Молимо да се пријавите!");
+    }
+
+    const newReservation = {
+        ...reservationData,
+        guestId: session.user.guestId,
+        numGuests: Number(formData.get("numGuests")),
+        observations: formData.get("observations").slice(0, 500),
+        hasBreakfast: false,
+        totalPrice: reservationData.cabinPrice,
+        status: "непотврђен",
+        isPaid: false
+    }
+    try {
+        await prisma.bookings.create({ data: newReservation })
+    } catch (error) {
+        console.error("❌ERROR: ", error);
+        throw new Error(error.message);
+    }
+    revalidatePath(`/cabins/${reservationData.cabinId}`);
+    redirect("/account/reservations");
 }
 
 export const updateReservation = async (formData) => {

@@ -4,11 +4,36 @@
 import { useReservation } from "@/app/_components/ReservationContext";
 // components
 import Image from "next/image";
+import SubmitButton from "@/app/_components/SubmitButton";
+// server actions
+import { createReservation } from "@/app/_lib/actions";
 // utility functions
-import { format } from "date-fns";
+import { differenceInDays, format } from "date-fns";
 
 const ReservationForm = ({ cabin, user }) => {
-    const { range } = useReservation();
+    const { range, resetRange } = useReservation();
+    const { regularPrice, discount, id } = cabin;
+
+    const startDate = range.from;
+    const endDate = range.to;
+
+    const numNights = differenceInDays(endDate, startDate);
+    const cabinPrice = numNights * (regularPrice - discount);
+
+    const reservationData = {
+        startDate,
+        endDate,
+        numNights,
+        cabinPrice,
+        cabinId: id,
+    }
+
+    // How to pass reservationData object to createReservation function
+    // Call bind method on createReservation function
+    // 1. bind method set "this" keyword of createReservation function / don't need it in this case
+    // 2. Pass additional arguments(reservationData) to createReservation function
+    // reservationData object will become a first argument of function that we are binding 
+    const createReservationWithData = createReservation.bind(null, reservationData);
 
     return (
         <div className="grow flex flex-col text-lg min-w-[550px]">
@@ -31,7 +56,13 @@ const ReservationForm = ({ cabin, user }) => {
             ) : (
                 <p className="text-primary-300 ml-10 my-2 text-base">Да би сте резервисали апартман изаберите датуме из календара</p>
             )}
-            <form className="bg-primary-900 py-8 px-10 flex flex-col flex-1 justify-between">
+            <form
+                action={async (formData) => {
+                    await createReservationWithData(formData);
+                    resetRange();
+                }}
+                className="bg-primary-900 py-8 px-10 flex flex-col flex-1 justify-between"
+            >
                 <div className="space-y-1">
                     <label htmlFor="numGuests">Колико гостију?</label>
                     <select
@@ -58,12 +89,11 @@ const ReservationForm = ({ cabin, user }) => {
                     />
                 </div>
                 <div className="flex justify-end">
-                    <button
-                        className="bg-accent-500 px-5 py-2 uppercase tracking-wider text-primary-800 font-semibold hover:bg-accent-600
-                            transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300"
-                    >
-                        Резервишите
-                    </button>
+                    {(startDate && endDate) ?
+                        <SubmitButton pendingLabel="Сачекајте...">
+                            Резервишите
+                        </SubmitButton>
+                        : null}
                 </div>
             </form>
         </div>

@@ -35,5 +35,6 @@
   --rdp-accent-color: theme("colors.accent.400") !important;
   --rdp-today-color: theme("colors.accent.700") !important;
   --rdp-range_middle-background-color: theme("colors.primary.800") !important;
+  --rdp-disabled-opacity: 20% !important;
   margin: 0 !important;
 }

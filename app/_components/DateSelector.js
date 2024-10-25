@@ -5,16 +5,20 @@ import { useReservation } from "@/app/_components/ReservationContext";
 // components
 import { DayPicker } from "react-day-picker";
 // utility functions
+import { isAlreadyBooked } from "@/app/_lib/utils";
+import { differenceInDays, isPast, isSameDay } from "date-fns";
 import { sr } from "react-day-picker/locale";
 // styles
 import "react-day-picker/style.css";
 
 const DateSelector = ({ cabin, settings, bookedDates }) => {
     const { range, setRange, resetRange } = useReservation();
-    const { discount, regularPrice, numNights, cabinPrice } = cabin;
+    const { discount, regularPrice } = cabin;
 
-    const minBookingLength = 1;
-    const maxBookingLength = 20;
+    const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range;
+
+    const numNights = differenceInDays(displayRange.to, displayRange.from);
+    const cabinPrice = numNights * (regularPrice - discount);
 
     return (
         <div className="flex flex-col grow">
@@ -22,13 +26,13 @@ const DateSelector = ({ cabin, settings, bookedDates }) => {
                 className="grow place-content-around place-self-center"
                 classNames={{ day: `hover:bg-accent-400 rounded-full transition-colors duration-300` }}
                 mode="range"
-                selected={range}
+                selected={displayRange}
                 onSelect={(range) => setRange(range)}
                 locale={sr}
                 startMonth={new Date()}
-                disabled={{ before: new Date() }}
                 endMonth={new Date(new Date().getFullYear() + 2, 11)}
                 numberOfMonths={2}
+                disabled={(currentDate) => isPast(currentDate) || bookedDates.some(date => isSameDay(date, currentDate))}
             />
             <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-[60px]">
                 <div className="flex items-baseline gap-6">

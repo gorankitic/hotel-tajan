@@ -12,13 +12,13 @@ model Bookings {
   startDate      DateTime @db.Date
   endDate        DateTime @db.Date
   cabinPrice     Int
-  breakfastPrice Int
+  breakfastPrice Int?
   totalPrice     Int
   isPaid         Boolean
   hasBreakfast   Boolean
   numGuests      Int
   numNights      Int
-  observations   String
+  observations   String?
   status         String
 
   cabinId String @db.ObjectId
@@ -29,7 +29,7 @@ model Bookings {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  v         Int      @map("__v")
+  v         Int?     @map("__v")
 
   @@index([cabinId])
   @@index([guestId])
