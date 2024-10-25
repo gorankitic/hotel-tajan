@@ -1,4 +1,5 @@
-
+// next-auth
+import { auth } from "@/app/_lib/auth";
 // components
 import Link from "next/link";
 import ReservationList from "@/app/_components/ReservationList";
@@ -9,11 +10,10 @@ export const metadata = {
     title: "Резервације",
 };
 
-// REFACTOR USER AND GUEST
 const Reservations = async () => {
-    const guest = await prisma.guests.findUnique({ where: { kindeId: user.id } });
+    const session = await auth();
 
-    const bookings = await prisma.bookings.findMany({ where: { guestId: guest.id }, include: { cabin: true } });
+    const bookings = await prisma.bookings.findMany({ where: { guestId: session.user.guestId }, include: { cabin: true } });
 
     return (
         <div>

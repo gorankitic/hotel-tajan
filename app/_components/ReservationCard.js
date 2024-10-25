@@ -12,7 +12,6 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 const ReservationCard = ({ booking }) => {
     const { id, startDate, endDate, numNights, totalPrice, numGuests, createdAt, cabin: { name, imageUrl } } = booking;
 
-
     return (
         <div className="flex border border-primary-800">
 
@@ -57,9 +56,9 @@ const ReservationCard = ({ booking }) => {
             <div className="flex flex-col border-l border-primary-800 w-[100px]">
                 <Link
                     href={`/account/reservations/edit/${id}`}
-                    className="group flex items-center gap-1 uppercase font-medium text-sm text-primary-300 border-b border-primary-800 flex-grow justify-center hover:bg-accent-600 transition-colors hover:text-primary-900"
+                    className="group flex items-center gap-1 uppercase font-semibold text-sm text-primary-300 border-b border-primary-800 flex-grow justify-center hover:bg-accent-600 transition-colors hover:text-primary-900"
                 >
-                    <PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors" />
+                    <PencilSquareIcon className="h-5 w-5 text-primary-600 group-hover:text-primary-900 transition-colors" />
                     <span className="mt-1">Уреди</span>
                 </Link>
                 <DeleteReservation bookingId={id} />

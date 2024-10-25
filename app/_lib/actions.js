@@ -48,8 +48,25 @@ export const updateGuest = async (formData) => {
 }
 
 export const deleteReservation = async (bookingId) => {
-
-    await prisma.bookings.delete({ where: { id: bookingId } });
-
+    const session = await auth();
+    if (!session) {
+        throw new Error("Молимо да се пријавите!");
+    }
+    try {
+        await prisma.bookings.delete({
+            where: {
+                id: bookingId,
+                AND: [
+                    { guestId: session.user.guestId }
+                ],
+            }
+        });
+    } catch (error) {
+        console.error("❌❌❌ ERROR: ", error?.meta?.cause);
+        if (error.code === "P2025") {
+            throw new Error("Немате дозволу да обришете ову резервацију.");
+        }
+        throw new Error("Не можете обрисати ову резервацију. Покушајте касније.");
+    }
     revalidatePath("/account/reservations");
 }
